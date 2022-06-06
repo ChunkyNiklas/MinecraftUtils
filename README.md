@@ -17,7 +17,7 @@ public void onEnable() {
 }
 ```
 
-### Usage
+### Get Location
 ```java
 @EventHandler
 public void onJoin(PlayerJoinEvent event) {
@@ -30,5 +30,24 @@ public void onJoin(PlayerJoinEvent event) {
 		player.sendMessage("§cNo spawn has been set.");
 	}
 }
-
 ```
+
+### Set Location
+```java
+@Override
+public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+	if(sender instanceof Player) {
+		if(args.length == 1) {
+			String name = args[0];
+		// Set the Location
+				if(locationAPI.setLocation(((Player) sender).getLocation(), name, true)) {
+				sender.sendMessage("Successfully saved location");
+			}else
+				sender.sendMessage("Could not save Location");
+		}else
+			sender.sendMessage("Use '/setspawn name'");
+	}
+	return true;
+}
+```
+
