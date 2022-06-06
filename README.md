@@ -7,7 +7,7 @@ You'll find different JAVA Classes here for Bukkit/Spigot. You can use them in y
 ##LocationAPI
 ### Initialize
 ```java
-LocationAPI locationAPI;
+	LocationAPI locationAPI;
 
 	@Override
 	public void onEnable() {
@@ -16,3 +16,21 @@ LocationAPI locationAPI;
 	}
 ```
 
+### Usage
+```java
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+
+		// Clear Inventory and Armor
+		if(locationAPI.getLocation("Spawn") != null) {
+			player.teleport(locationAPI.getLocation("Spawn"));
+		}else{
+			player.sendMessage("§cNo spawn has been set.");
+		}
+
+
+
+	}
+	}
+```
