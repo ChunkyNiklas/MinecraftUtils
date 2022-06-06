@@ -14,31 +14,29 @@ import java.io.IOException;
 */
 public class LocationAPI {
 
-	String fileName = "Locations";
-	String folderName = "Config";
-	File file = new File(
-			"plugins//"+folderName+"//",
-			fileName+".yml"
-	);
-	YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+	String fileName = "";
+	String folderName = "";
+	File file;
+	YamlConfiguration yamlConfiguration;
 
 	/**
 	 * Save a new Location in the Config.
-	 * @param location Location of the Player or so.
+	 *
+	 * @param location     Location of the Player or so.
 	 * @param locationName LocationName to safe in the Config
-	 * @param overwrite If the Location is already saved you can overwrite
+	 * @param overwrite    If the Location is already saved you can overwrite
 	 * @return returns true if success, and false if an error occurred.
 	 */
 	public boolean setLocation(Location location, String locationName, boolean overwrite) {
-		if(yamlConfiguration.get(locationName+".World") != null && overwrite
-				|| yamlConfiguration.get(locationName+".World") == null) {
+		if (yamlConfiguration.get(locationName + ".World") != null && overwrite
+				|| yamlConfiguration.get(locationName + ".World") == null) {
 
-			yamlConfiguration.set(locationName+".World", location.getWorld().getName());
-			yamlConfiguration.set(locationName+".X", location.getX());
-			yamlConfiguration.set(locationName+".Y", location.getY());
-			yamlConfiguration.set(locationName+".Z", location.getZ());
-			yamlConfiguration.set(locationName+".YAW", location.getYaw());
-			yamlConfiguration.set(locationName+".PITCH", location.getPitch());
+			yamlConfiguration.set(locationName + ".World", location.getWorld().getName());
+			yamlConfiguration.set(locationName + ".X", location.getX());
+			yamlConfiguration.set(locationName + ".Y", location.getY());
+			yamlConfiguration.set(locationName + ".Z", location.getZ());
+			yamlConfiguration.set(locationName + ".YAW", location.getYaw());
+			yamlConfiguration.set(locationName + ".PITCH", location.getPitch());
 			try {
 				yamlConfiguration.save(file);
 				return true;
@@ -54,23 +52,48 @@ public class LocationAPI {
 
 	/**
 	 * Get a Location from the Config
+	 *
 	 * @param locationName the Location's Name your using to get the Location from Config
 	 * @return will return a new Location including Worldname,XYZ and YAW/PITCH
 	 */
 	public Location getLocation(String locationName) {
 		return new Location(
-				Bukkit.getWorld(yamlConfiguration.getString(locationName+".World")),
-				yamlConfiguration.getInt(locationName+".X"),
-				yamlConfiguration.getInt(locationName+".Y"),
-				yamlConfiguration.getInt(locationName+".Z"),
-				(float)yamlConfiguration.getDouble(locationName+".YAW"),
-				(float)yamlConfiguration.getDouble(locationName+".PITCH")
+				Bukkit.getWorld(yamlConfiguration.getString(locationName + ".World")),
+				yamlConfiguration.getInt(locationName + ".X"),
+				yamlConfiguration.getInt(locationName + ".Y"),
+				yamlConfiguration.getInt(locationName + ".Z"),
+				(float) yamlConfiguration.getDouble(locationName + ".YAW"),
+				(float) yamlConfiguration.getDouble(locationName + ".PITCH")
 		);
 	}
 
 
-
-
-
-
+	/**
+	 * Create a new LocationAPI, new Folder/File if required.
+	 * @param folderName name of folder
+	 * @param fileName name of file
+	 */
+	public LocationAPI(String folderName, String fileName) {
+		this.fileName = fileName;
+		this.folderName = folderName;
+		file = new File(
+				"plugins//" + folderName + "//",
+				fileName
+		);
+		yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+		if (!file.exists()) {
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
